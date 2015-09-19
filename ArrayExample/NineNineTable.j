@@ -8,17 +8,33 @@
 .end method
 
 .method public static main([Ljava/lang/String;)V
-	.limit stack 3
+	.limit stack 4
 	.limit locals 5
 
 	iconst_1
 	istore_1	; index i
+	
+	bipush 10
+	bipush 10
+	multianewarray [[I 2
+	astore 3
 
 	Outer:
 		
 		iconst_1
 		istore_2 ; index j
 		Inner:
+			aload 3
+			iload_1
+			aaload
+			
+			iload_2
+			dup
+			iload_1
+			imul
+			
+			iastore
+
 			jsr Print
 			iinc 2 1
 			iload_2
@@ -52,9 +68,11 @@
                 ldc "="
                 invokevirtual java/io/PrintStream/print(Ljava/lang/String;)V
 		
+		aload 3
 		iload_1
+		aaload
 		iload_2
-		imul
+		iaload
 	        getstatic java/lang/System/out Ljava/io/PrintStream;
                 swap
                 invokevirtual java/io/PrintStream/print(I)V
